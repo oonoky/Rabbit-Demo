@@ -1,7 +1,7 @@
 package com.example.rabbit.rabbit_demo.config;
 
-import com.example.rabbit.rabbit_demo.dto.Message;
 import com.example.rabbit.rabbit_demo.dto.OrderDTO;
+import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.support.converter.DefaultClassMapper;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.context.annotation.Bean;
@@ -25,9 +25,13 @@ public class RabbitConfig {
         DefaultClassMapper classMapper = new DefaultClassMapper();
         Map<String, Class<?>> idClassMapping = new HashMap<>();
         idClassMapping.put("com.example.rabbit.rabbit_receiver.dto.OrderDTO", OrderDTO.class);
-        idClassMapping.put("com.example.rabbit.rabbit_receiver.dto.Message", Message.class);
         classMapper.setIdClassMapping(idClassMapping);
         return classMapper;
+    }
+
+    @Bean
+    public TopicExchange topicExchange() {
+        return new TopicExchange("order-topic-exchange");
     }
 
 }
